@@ -41,7 +41,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Comparator.cs" />
     <Compile Include="DigitSignature.cs" />
+    <Compile Include="FileReader.cs" />
+    <Compile Include="FileWriter.cs" />
+    <Compile Include="IFileReader.cs" />
+    <Compile Include="IFileWriter.cs" />
     <Compile Include="KeyFileReader.cs" />
     <Compile Include="KeyFileWriter.cs" />
     <Compile Include="Program.cs" />

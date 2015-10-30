@@ -11,68 +11,45 @@ namespace DigitSignProject
 {
     public class DigitSignature
     {
-        private  string MESSAGE_HASH_FILE_NAME = "./MessageHash.txt";
-        public  string ORIGIN_DIGIT_SIGNATURE_FILE_NAME = "./DSign.txt";
-        private  string CHECK_DIGIT_SIGNATURE_FILE_NAME = "./CheckDSign.txt";
+        private string MESSAGE_HASH_FILE_NAME = "./MessageHash.txt";                // Файл для хранения кэша сообщения
+        public string ORIGIN_DIGIT_SIGNATURE_FILE_NAME = "./DSign.txt";             // Файл для хранения ЭЦП
+        private string CHECK_DIGIT_SIGNATURE_FILE_NAME = "./CheckDSign.txt";        // Промежуточный файл для хранения проверяемой ЭЦП
         public EncryptionAlgorithms.RSA rsa { get; set; }
+        public IFileReader fileReader { get; set; }
+        public IFileWriter fileWriter { get; set; }
+        public MD5 md5Hash { get; set; }
         public DigitSignature()
         {
             rsa = new EncryptionAlgorithms.RSA();
+            fileReader = new FileReader();
+            fileWriter = new FileWriter();
+            md5Hash = MD5.Create();
             rsa.GenerateKeys();
         }
+        /// <summary>
+        /// Генерирует цифровую подпись для документа и записывает ее в файл ORIGIN_DIGIT_SIGNATURE_FILE_NAME
+        /// </summary>
+        /// <param name="filePath">Путь к документу, для кот. генерируется ЭЦП</param>
         public void GenerateSignature(string filePath)
         {
-            byte[] message = null;
-            using (FileStream file = new FileStream(filePath, FileMode.Open, FileAccess.Read))
-            {
-                message = new byte[file.Length];
-                file.Read(message, 0, (int)file.Length);
-                file.Close();
-            }            
-            byte[] messageHash = ComuteHash(message);
-            using (FileStream file = new FileStream(MESSAGE_HASH_FILE_NAME, FileMode.Create, FileAccess.Write))
-            {
-                file.Write(messageHash, 0, messageHash.Length);
-                file.Close();
-            }
+            byte[] message = fileReader.Read(filePath);
+            byte[] messageHash = md5Hash.ComputeHash(message);
+            fileWriter.Write(MESSAGE_HASH_FILE_NAME, messageHash);      
             rsa.Encrypt(MESSAGE_HASH_FILE_NAME, ORIGIN_DIGIT_SIGNATURE_FILE_NAME, rsa.PRIVATE_KEY_FILE_NAME);
         }
+        /// <summary>
+        /// Проверяет корректиность ЭЦП документа
+        /// </summary>
+        /// <param name="filePath">Путь к документу</param>
+        /// <param name="signPath">Путь к файлу с ЭЦП</param>
+        /// <returns>1 - ЭЦП верна, 0 - нет</returns>
         public bool Check(string filePath, string signPath)
         {
-            byte[] message = null;
-            using (FileStream file = new FileStream(filePath, FileMode.Open, FileAccess.Read))
-            {
-                message = new byte[file.Length];
-                file.Read(message, 0, (int)file.Length);
-                file.Close();
-            }
-            byte[] messageHash = ComuteHash(message);
-            rsa.Decrypt(signPath, CHECK_DIGIT_SIGNATURE_FILE_NAME, rsa.PUBLIC_KEY_FILE_NAME);
-
-            byte[] digitSignature = null;
-            using (FileStream file = new FileStream(CHECK_DIGIT_SIGNATURE_FILE_NAME, FileMode.Open, FileAccess.Read))
-            {
-                digitSignature = new byte[file.Length];
-                file.Read(digitSignature, 0, (int)file.Length);
-                file.Close();
-            }
-            return CompareByteArrays(messageHash, digitSignature);
-        }
-        private bool CompareByteArrays(byte[] firstArray, byte[] secondArray)
-        {
-            if (firstArray.Length != secondArray.Length)
-                return false;
-            for (int i = 0; i < firstArray.Length; i++)
-                if (firstArray[i] != secondArray[i])
-                    return false;
-            return true;
-        }
-        private byte[] ComuteHash(byte[] message)
-        {
-            MD5 md5Hash = MD5.Create();
+            byte[] message = fileReader.Read(filePath);
             byte[] messageHash = md5Hash.ComputeHash(message);
-
-            return messageHash;
-        }
+            rsa.Decrypt(signPath, CHECK_DIGIT_SIGNATURE_FILE_NAME, rsa.PUBLIC_KEY_FILE_NAME);
+            byte[] digitSignature = fileReader.Read(CHECK_DIGIT_SIGNATURE_FILE_NAME);
+            return Comparator.CompareByteArrays(messageHash, digitSignature);
+        }   
     }
 }
