@@ -50,5 +50,6 @@ namespace DigitSignProject
             byte[] digitSignature = fileReader.Read(CHECK_DIGIT_SIGNATURE_FILE_NAME);
             return Comparator.CompareByteArrays(messageHash, digitSignature);
         }   
+
     }
 }
