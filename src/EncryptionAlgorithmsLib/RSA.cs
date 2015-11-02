@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EncryptionAlgorithms
+namespace EncryptionAlgorithmsLib
 {
     public class RSA 
     {
@@ -16,6 +16,9 @@ namespace EncryptionAlgorithms
         private Random random;
 
         private Int64[] simpleList;     
+        /// <summary>
+        /// Генерирует ключи для шифрования и расшифрования
+        /// </summary>
         public void GenerateKeys()
         {
             random = new Random((int)DateTime.Now.Ticks % Int32.MaxValue);
@@ -48,6 +51,11 @@ namespace EncryptionAlgorithms
             KeyFileWriter.WriteKey(publicKey, PUBLIC_KEY_FILE_NAME);
             KeyFileWriter.WriteKey(privateKey, PRIVATE_KEY_FILE_NAME);
         }
+        /// <summary>
+        /// Генерирует список простых чисел заданного размера
+        /// </summary>
+        /// <param name="arraySize">Размера списка</param>
+        /// <returns>Список простых чисел</returns>
         private Int64[] GenerateSimpleNumbersList(int arraySize)
         {
             Int64[] simpleList = new Int64[arraySize];
@@ -75,6 +83,10 @@ namespace EncryptionAlgorithms
             }
             return simpleList;
         }
+        /// <summary>
+        /// Генерирует псевдослучайное 16-битное целове число
+        /// </summary>
+        /// <returns>Рандомное 16-битное целое</returns>
         private Int16 GenerateRandomNumberInt16()
         {
             Int16 number = 0;
@@ -85,6 +97,10 @@ namespace EncryptionAlgorithms
             while (!IsSimpleNumber(number));
             return number;
         }
+        /// <summary>
+        /// Генерирует псевдослучайное 32-битное целове число
+        /// </summary>
+        /// <returns>Рандомное 32-битное целое</returns>
         private Int32 GenerateRandomNumberInt32()
         {
             Int32 number = 0;
@@ -95,7 +111,11 @@ namespace EncryptionAlgorithms
             while (!IsSimpleNumber(number));
             return number;
         }
-
+        /// <summary>
+        /// Проверяет, является ли заданное число простым
+        /// </summary>
+        /// <param name="number">Заданное число</param>
+        /// <returns>1 - простое, 0 - иначе</returns>
         private bool IsSimpleNumber(Int64 number)
         {
             for (int i = 0; i < simpleList.Length; i++)
@@ -122,7 +142,12 @@ namespace EncryptionAlgorithms
             y = x1;
             return d;
         }
-
+        /// <summary>
+        /// Реализует расширеннный алгоритм Евклида для входных a,n
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="n"></param>
+        /// <returns></returns>
         private Int64 ExtendedEuclid(Int64 a, Int64 n)
         {
             Int64 x, y;
@@ -133,6 +158,12 @@ namespace EncryptionAlgorithms
             return (x % n + n) % n;
         }
         
+        /// <summary>
+        /// Шифрует входное сообщение из файла и записывает его в другой файл
+        /// </summary>
+        /// <param name="sousreFileName">Исходный файл для шифрования</param>
+        /// <param name="destFileName">Файл для записи зашифрованных данных</param>
+        /// <param name="keyFilename">Файл с ключом для шифрования</param>
         public void Encrypt(string sousreFileName, string destFileName, string keyFilename)
         {
             RSAKey publicKey = KeyFileReader.ReadKey(keyFilename);
@@ -154,7 +185,12 @@ namespace EncryptionAlgorithms
             sourseFileStream.Close();
             destFileStream.Close();
         }
-
+        /// <summary>
+        /// Расшифровывает заданное сообщение и записывает его в другой файд
+        /// </summary>
+        /// <param name="sousreFileName">Файл для расшифрования</param>
+        /// <param name="destFileName">Выходной расшфрованный файл</param>
+        /// <param name="keyFilename">Файл с ключом для расшифрования</param>
         public void Decrypt(string sousreFileName, string destFileName, string keyFilename)
         {
             RSAKey privateKey = KeyFileReader.ReadKey(keyFilename);
@@ -175,10 +211,7 @@ namespace EncryptionAlgorithms
             }
             sourseFileStream.Close();
             destFileStream.Close();
-        }
-
-
-  
+        }          
         /// <summary>
         /// Находит наибольший общий делитель двух целых чисел по алгоритму Евклида
         /// </summary>
@@ -200,7 +233,6 @@ namespace EncryptionAlgorithms
             }
             return tmpFirstNumber + tmpSecondNumber;
         }
-
         /// <summary>
         /// Алгоритм быстроего возведения числа в степень по модулю
         /// </summary>

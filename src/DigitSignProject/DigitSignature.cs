@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Security.Cryptography;
-using EncryptionAlgorithms;
+using EncryptionAlgorithmsLib;
 
 namespace DigitSignProject
 {
@@ -13,13 +13,13 @@ namespace DigitSignProject
         private string MESSAGE_HASH_FILE_NAME = "./MessageHash.txt";                // Файл для хранения кэша сообщения
         public string ORIGIN_DIGIT_SIGNATURE_FILE_NAME = "./DSign.txt";             // Файл для хранения ЭЦП
         private string CHECK_DIGIT_SIGNATURE_FILE_NAME = "./CheckDSign.txt";        // Промежуточный файл для хранения проверяемой ЭЦП
-        public EncryptionAlgorithms.RSA rsa { get; set; }
+        public EncryptionAlgorithmsLib.RSA rsa { get; set; }
         public IFileReader fileReader { get; set; }
         public IFileWriter fileWriter { get; set; }
         public MD5 md5Hash { get; set; }
         public DigitSignature()
         {
-            rsa = new EncryptionAlgorithms.RSA();
+            rsa = new EncryptionAlgorithmsLib.RSA();
             fileReader = new FileReader();
             fileWriter = new FileWriter();
             md5Hash = MD5.Create();
@@ -50,5 +50,6 @@ namespace DigitSignProject
             byte[] digitSignature = fileReader.Read(CHECK_DIGIT_SIGNATURE_FILE_NAME);
             return Comparator.CompareByteArrays(messageHash, digitSignature);
         }   
+
     }
 }
