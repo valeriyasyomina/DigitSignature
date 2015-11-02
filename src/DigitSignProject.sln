@@ -5,6 +5,8 @@ VisualStudioVersion = 12.0.21005.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DigitSignProject", "DigitSignProject\DigitSignProject.csproj", "{1AF1C4E5-3F62-4F7B-8477-0D12EC10E90B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EncryptionAlgorithmsLib", "EncryptionAlgorithmsLib\EncryptionAlgorithmsLib.csproj", "{2C74574F-69C0-44B6-9CA7-E3F696DF46A1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{1AF1C4E5-3F62-4F7B-8477-0D12EC10E90B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1AF1C4E5-3F62-4F7B-8477-0D12EC10E90B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1AF1C4E5-3F62-4F7B-8477-0D12EC10E90B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2C74574F-69C0-44B6-9CA7-E3F696DF46A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2C74574F-69C0-44B6-9CA7-E3F696DF46A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2C74574F-69C0-44B6-9CA7-E3F696DF46A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2C74574F-69C0-44B6-9CA7-E3F696DF46A1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

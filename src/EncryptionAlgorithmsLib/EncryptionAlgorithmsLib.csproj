@@ -4,16 +4,15 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{1AF1C4E5-3F62-4F7B-8477-0D12EC10E90B}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <ProjectGuid>{2C74574F-69C0-44B6-9CA7-E3F696DF46A1}</ProjectGuid>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DigitSignProject</RootNamespace>
-    <AssemblyName>DigitSignProject</AssemblyName>
+    <RootNamespace>EncryptionAlgorithmsLib</RootNamespace>
+    <AssemblyName>EncryptionAlgorithmsLib</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -23,7 +22,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -41,23 +39,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Comparator.cs" />
-    <Compile Include="DigitSignature.cs" />
-    <Compile Include="FileReader.cs" />
-    <Compile Include="FileWriter.cs" />
-    <Compile Include="IFileReader.cs" />
-    <Compile Include="IFileWriter.cs" />
-    <Compile Include="Program.cs" />
+    <Compile Include="AES128.cs" />
+    <Compile Include="KeyFileReader.cs" />
+    <Compile Include="KeyFileWriter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\EncryptionAlgorithmsLib\EncryptionAlgorithmsLib.csproj">
-      <Project>{2c74574f-69c0-44b6-9ca7-e3f696df46a1}</Project>
-      <Name>EncryptionAlgorithmsLib</Name>
-    </ProjectReference>
+    <Compile Include="RSA.cs" />
+    <Compile Include="RSAKey.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
